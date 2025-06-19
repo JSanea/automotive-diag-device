@@ -1,0 +1,2 @@
+../Core/Src/Com/CAN/Src/can_drv.c:12:6:HAL_CAN_TxMailBoxCompleteCallback	1
+../Core/Src/Com/CAN/Src/can_drv.c:21:6:HAL_CAN_RxFifo0MsgPendingCallback	4
