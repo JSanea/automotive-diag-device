@@ -24,6 +24,7 @@ typedef struct{
 }CBufferAttr_t;
 
 
+/* CAN Tx Buffer */
 typedef struct{
 	CAN_TxRxMessage_t buff[CAN_TX_BUFFER_SIZE];
 	CBufferAttr_t attr;
@@ -31,6 +32,16 @@ typedef struct{
 	osMutexId_t txMutex;
 #endif
 }CAN_TxCBuffer_t;
+
+/* CAN Rx Buffer */
+typedef struct{
+	CAN_TxRxMessage_t buff[CAN_RX_BUFFER_SIZE];
+	CBufferAttr_t attr;
+#if CAN_TX_ENABLE_MULTITASKING == 1
+	osMutexId_t rxMutex;
+#endif
+}CAN_RxCBuffer_t;
+
 
 static bool TxCBuffer_IsFull(CAN_TxCBuffer_t *cb){
 	return ((cb->attr.tail + 1) % CAN_TX_BUFFER_SIZE) == cb->attr.head;
@@ -50,9 +61,9 @@ static bool TxCBuffer_IsEmpty(CAN_TxCBuffer_t *cb){
  */
 void CAN_TxCBuffer_Init(CAN_TxCBuffer_t* cb){
 	memset(cb->buff, 0, sizeof(cb->buff));
-    cb->attr.count = 0;
-    cb->attr.head = 0;
-    cb->attr.tail = 0;
+	cb->attr.count = 0;
+	cb->attr.head = 0;
+	cb->attr.tail = 0;
 #if CAN_TX_ENABLE_MULTITASKING == 1
     osMutexAttr_t attr = {0};
     cb->txMutex = osMutexNew(&attr);
@@ -109,7 +120,7 @@ bool CAN_TxCBuffer_Add(CAN_TxCBuffer_t* cb, CAN_TxRxMessage_t* data){
  * @return true if a message was successfully retrieved; false if the buffer was empty.
  */
 bool CAN_TxCBuffer_Get(CAN_TxCBuffer_t* cb, CAN_TxRxMessage_t* data){
-	if(TxCBuffer_IsEmpty() == true){
+	if(TxCBuffer_IsEmpty(cb) == true){
 		return false;
 	}
 

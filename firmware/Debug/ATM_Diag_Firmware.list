@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  00021d19  00000000  00000000  0002362f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000151cf  00000000  00000000  00045348  2**0
+ 17 .debug_line   000151cd  00000000  00000000  00045348  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000db296  00000000  00000000  0005a517  2**0
+ 18 .debug_str    000db296  00000000  00000000  0005a515  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  001357ad  2**0
+ 19 .comment      00000043  00000000  00000000  001357ab  2**0
                   CONTENTS, READONLY
  20 .debug_frame  0000555c  00000000  00000000  001357f0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -408,11 +408,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
  8000546:	b08c      	sub	sp, #48	@ 0x30
  8000548:	af00      	add	r7, sp, #0
  800054a:	6078      	str	r0, [r7, #4]
-//        {
-//            // Process received message
-//        }
-//    }
-
     if (hcan->Instance != CAN1) return;
  800054c:	687b      	ldr	r3, [r7, #4]
  800054e:	681b      	ldr	r3, [r3, #0]
