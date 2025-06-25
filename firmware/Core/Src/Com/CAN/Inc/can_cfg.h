@@ -9,8 +9,19 @@
 #define SRC_COM_CAN_INC_CAN_CFG_H_
 
 #include <stdint.h>
+#include "FreeRTOS.h"
+#include "task.h"
 
+
+/* Defines */
 #define CAN_DATA_SIZE ((uint8_t) 8)
+
+#define CAN_TX_ENABLE_MULTITASKING 0
+#define CAN_RX_ENABLE_MULTITASKING 0
+
+
+/* Variables */
+
 
 /* CAN message structure */
 typedef struct {
@@ -24,7 +35,7 @@ typedef struct {
     uint32_t IDE;
     /* Remote transmission request */
     uint32_t RTR;
-} CAN_TxRxMessageTypeDef;
+} CAN_TxRxMessage_t;
 
 
 #endif /* SRC_COM_CAN_INC_CAN_CFG_H_ */

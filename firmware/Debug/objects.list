@@ -1,3 +1,4 @@
+"./Core/Src/Com/CAN/Src/can_cbuffer.o"
 "./Core/Src/Com/CAN/Src/can_drv.o"
 "./Core/Src/Diag/Src/diag.o"
 "./Core/Src/Uds/Src/uds_services.o"

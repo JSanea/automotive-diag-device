@@ -43,6 +43,7 @@
 /* Private variables ---------------------------------------------------------*/
 CAN_HandleTypeDef hcan1;
 
+
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
@@ -223,14 +224,15 @@ static void MX_CAN1_Init(void)
   hcan1.Init.ReceiveFifoLocked = DISABLE;
   hcan1.Init.TransmitFifoPriority = DISABLE;
 
-  if (HAL_CAN_Init(&hcan1) != HAL_OK){
+  if (HAL_CAN_Init(&hcan1) != HAL_OK)
+  {
     Error_Handler();
   }
 
   /* USER CODE BEGIN CAN1_Init 2 */
 
   // Configure filters
-  CAN_FilterTypeDef sFilterConfig = {0};
+  CAN_FilterTypeDef sFilterConfig;
   sFilterConfig.FilterBank = 0;
   sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
   sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
@@ -243,8 +245,8 @@ static void MX_CAN1_Init(void)
   sFilterConfig.SlaveStartFilterBank = 14;
 
   if (HAL_CAN_ConfigFilter(&hcan1, &sFilterConfig) != HAL_OK
-		  || HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY) != HAL_OK
-		  || HAL_CAN_Start(&hcan1) != HAL_OK)
+	  || HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY) != HAL_OK
+	  || HAL_CAN_Start(&hcan1) != HAL_OK)
   {
       Error_Handler();
   }

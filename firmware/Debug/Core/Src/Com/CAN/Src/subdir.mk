@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/Com/CAN/Src/can_cbuffer.c \
 ../Core/Src/Com/CAN/Src/can_drv.c 
 
 OBJS += \
+./Core/Src/Com/CAN/Src/can_cbuffer.o \
 ./Core/Src/Com/CAN/Src/can_drv.o 
 
 C_DEPS += \
+./Core/Src/Com/CAN/Src/can_cbuffer.d \
 ./Core/Src/Com/CAN/Src/can_drv.d 
 
 
@@ -21,7 +24,7 @@ Core/Src/Com/CAN/Src/%.o Core/Src/Com/CAN/Src/%.su Core/Src/Com/CAN/Src/%.cyclo:
 clean: clean-Core-2f-Src-2f-Com-2f-CAN-2f-Src
 
 clean-Core-2f-Src-2f-Com-2f-CAN-2f-Src:
-	-$(RM) ./Core/Src/Com/CAN/Src/can_drv.cyclo ./Core/Src/Com/CAN/Src/can_drv.d ./Core/Src/Com/CAN/Src/can_drv.o ./Core/Src/Com/CAN/Src/can_drv.su
+	-$(RM) ./Core/Src/Com/CAN/Src/can_cbuffer.cyclo ./Core/Src/Com/CAN/Src/can_cbuffer.d ./Core/Src/Com/CAN/Src/can_cbuffer.o ./Core/Src/Com/CAN/Src/can_cbuffer.su ./Core/Src/Com/CAN/Src/can_drv.cyclo ./Core/Src/Com/CAN/Src/can_drv.d ./Core/Src/Com/CAN/Src/can_drv.o ./Core/Src/Com/CAN/Src/can_drv.su
 
 .PHONY: clean-Core-2f-Src-2f-Com-2f-CAN-2f-Src
 

@@ -1,0 +1,4 @@
+../Core/Src/Com/CAN/Src/can_cbuffer.c:35:13:TxCBuffer_IsFull	1
+../Core/Src/Com/CAN/Src/can_cbuffer.c:39:13:TxCBuffer_IsEmpty	1
+../Core/Src/Com/CAN/Src/can_cbuffer.c:51:6:CAN_TxCBuffer_Init	1
+../Core/Src/Com/CAN/Src/can_cbuffer.c:63:6:TxCBuffer_Add	2
