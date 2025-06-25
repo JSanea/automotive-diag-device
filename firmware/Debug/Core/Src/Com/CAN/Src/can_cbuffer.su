@@ -1,5 +1,7 @@
-../Core/Src/Com/CAN/Src/can_cbuffer.c:46:13:TxCBuffer_IsFull	16	static
-../Core/Src/Com/CAN/Src/can_cbuffer.c:50:13:TxCBuffer_IsEmpty	16	static
-../Core/Src/Com/CAN/Src/can_cbuffer.c:62:6:CAN_TxCBuffer_Init	16	static
-../Core/Src/Com/CAN/Src/can_cbuffer.c:87:6:CAN_TxCBuffer_Add	24	static
-../Core/Src/Com/CAN/Src/can_cbuffer.c:122:6:CAN_TxCBuffer_Get	24	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:43:6:CAN_TxBuffer_Init	16	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:67:13:CAN_Buffer_IsFull	16	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:71:13:CAN_Buffer_IsEmpty	16	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:75:13:CAN_Buffer_Add	24	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:81:13:CAN_Buffer_Get	24	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:102:6:CAN_TxBuffer_Add	24	static
+../Core/Src/Com/CAN/Src/can_cbuffer.c:147:6:CAN_TxBuffer_Get	24	static

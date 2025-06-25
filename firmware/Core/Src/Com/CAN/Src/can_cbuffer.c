@@ -14,91 +14,114 @@
 #define CAN_TX_BUFFER_SIZE ((uint8_t) 32)
 #define CAN_RX_BUFFER_SIZE ((uint8_t) 32)
 
+CAN_TxRxMessage_t txBuff[CAN_TX_BUFFER_SIZE];
+CAN_TxRxMessage_t rxBuff[CAN_RX_BUFFER_SIZE];
+
+
 typedef struct{
+	/* Pointer to data array */
+	CAN_TxRxMessage_t* buff;
+	/* Buffer size */
+	uint8_t size;
 	/* Index of the front element */
 	uint8_t head;
 	/*  Index where the next element will be added */
 	uint8_t tail;
 	/* Current number of elements in the buffer */
 	uint8_t count;
-}CBufferAttr_t;
+}CAN_BufferHeader_t;
 
 
-/* CAN Tx Buffer */
 typedef struct{
-	CAN_TxRxMessage_t buff[CAN_TX_BUFFER_SIZE];
-	CBufferAttr_t attr;
+	CAN_BufferHeader_t header;
 #if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexId_t txMutex;
+	osMutexId_t mutex;
 #endif
-}CAN_TxCBuffer_t;
+}CAN_TxBuffer_t;
 
-/* CAN Rx Buffer */
-typedef struct{
-	CAN_TxRxMessage_t buff[CAN_RX_BUFFER_SIZE];
-	CBufferAttr_t attr;
+
+bool CAN_TxBuffer_Init(CAN_TxBuffer_t* cb){
+    if (cb == NULL) {
+        return false;
+    }
+	memset(txBuff, 0, sizeof(txBuff));
+	cb->header.buff = txBuff;
+	cb->header.size = CAN_TX_BUFFER_SIZE;
+	cb->header.count = 0;
+	cb->header.head = 0;
+	cb->header.tail = 0;
 #if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexId_t rxMutex;
+    osMutexAttr_t attr;
+    attr.name = "CAN_TX_BUFFER";
+    attr.attr_bits = osMutexPrioInherit;
+    attr.cb_mem = NULL;
+    attr.cb_size = 0;
+    cb->mutex = osMutexNew(&attr);
+    if(cb->mutex == NULL){
+    	return false;
+    }
 #endif
-}CAN_RxCBuffer_t;
-
-
-static bool TxCBuffer_IsFull(CAN_TxCBuffer_t *cb){
-	return ((cb->attr.tail + 1) % CAN_TX_BUFFER_SIZE) == cb->attr.head;
+    return true;
 }
 
-static bool TxCBuffer_IsEmpty(CAN_TxCBuffer_t *cb){
-	return cb->attr.tail == cb->attr.head;
+static bool CAN_Buffer_IsFull(CAN_BufferHeader_t* h){
+	return ((h->tail + 1) % h->size) == h->head;
 }
 
-/**
- * @brief Initializes the CAN transmit buffer.
- *
- * This function clears the buffer, resets the buffer attributes (count, head, tail),
- * and initializes the mutex if multitasking is enabled.
- *
- * @param cb pointer to the CAN_TxCBuffer structure to initialize.
- */
-void CAN_TxCBuffer_Init(CAN_TxCBuffer_t* cb){
-	memset(cb->buff, 0, sizeof(cb->buff));
-	cb->attr.count = 0;
-	cb->attr.head = 0;
-	cb->attr.tail = 0;
-#if CAN_TX_ENABLE_MULTITASKING == 1
-    osMutexAttr_t attr = {0};
-    cb->txMutex = osMutexNew(&attr);
-#endif
+static bool CAN_Buffer_IsEmpty(CAN_BufferHeader_t* h){
+	return h->tail == h->head;
+}
+
+static void CAN_Buffer_Add(CAN_BufferHeader_t* h, CAN_TxRxMessage_t* data){
+	h->buff[h->tail] = *data;
+	h->tail = (h->tail + 1) % h->size;
+	h->count += 1;
+}
+
+static void CAN_Buffer_Get(CAN_BufferHeader_t* h, CAN_TxRxMessage_t* data){
+	*data = h->buff[h->head];
+	h->head = (h->head + 1) % h->size;
+	h->count -= 1;
 }
 
 /**
  * @brief Adds a CAN message to the transmission buffer.
  *
- * This function inserts a new CAN transmission message into the buffer if there
- * is space available. It first checks if the buffer is full; if so, it returns
- * false. If multitasking is enabled, it acquires a mutex to ensure thread safety
- * during the buffer modification. The message is added at the tail position,
- * and the tail index and message count are updated with wrap-around logic. After
- * the insertion, the mutex is released (if used).
+ * This function attempts to add the provided CAN message to the transmission buffer.
+ * It first checks for null pointers to ensure valid inputs. If multitasking is enabled,
+ * it acquires a mutex to ensure thread-safe access to the buffer. The function then
+ * checks if the buffer has space available; if the buffer is full, it releases the mutex
+ * (if used) and returns false. Otherwise, it adds the message to the buffer, updates
+ * the buffer's tail index and message count with wrap-around logic, and releases the mutex
+ * (if used). The function returns true upon successful addition.
  *
- * @param cb pointer to the CAN transmission buffer.
- * @param data pointer to the CAN message to be added.
- * @return true if the message was successfully added; false if the buffer is full.
+ * @param cb Pointer to the CAN transmission buffer. Must be initialized.
+ * @param data Pointer to the CAN message to add. Must be a valid message pointer.
+ * @return true if the message was successfully added; false if input pointers are null or buffer is full.
  */
-bool CAN_TxCBuffer_Add(CAN_TxCBuffer_t* cb, CAN_TxRxMessage_t* data){
-	if(TxCBuffer_IsFull(cb) == true){
+bool CAN_TxBuffer_Add(CAN_TxBuffer_t* cb, CAN_TxRxMessage_t* data){
+    if (cb == NULL || data == NULL) {
+        return false;
+    }
+
+#if CAN_TX_ENABLE_MULTITASKING == 1
+	osMutexAcquire(cb->mutex, osWaitForever);
+#endif
+
+	CAN_BufferHeader_t* buffer_header_loc = &cb->header;
+
+	if(CAN_Buffer_IsFull(buffer_header_loc) == true){
+		#if CAN_TX_ENABLE_MULTITASKING == 1
+			osMutexRelease(cb->mutex);
+		#endif
+
 		return false;
 	}
 
-#if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexAcquire(cb->txMutex, osWaitForever);
-#endif
-
-	cb->buff[cb->attr.tail] = *data;
-	cb->attr.tail =  (cb->attr.tail + 1) % CAN_TX_BUFFER_SIZE;
-	cb->attr.count += 1;
+	CAN_Buffer_Add(buffer_header_loc, data);
 
 #if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexRelease(cb->txMutex);
+	osMutexRelease(cb->mutex);
 #endif
 
 	return true;
@@ -107,43 +130,48 @@ bool CAN_TxCBuffer_Add(CAN_TxCBuffer_t* cb, CAN_TxRxMessage_t* data){
 /**
  * @brief Retrieves a CAN message from the transmission buffer.
  *
- * This function removes the oldest message from the buffer and stores it in the
- * provided data pointer. It first checks if the buffer is empty; if so, it
- * returns false to indicate no message could be retrieved. If multitasking is
- * enabled, it acquires a mutex to ensure thread safety during buffer access.
- * The message at the head of the buffer is copied to the provided data pointer,
- * and the head index and message count are updated with wrap-around logic.
- * The mutex is released afterward (if used).
+ * This function extracts the oldest message from the transmission buffer and stores it
+ * in the provided data structure. It begins by validating the input pointers to prevent
+ * null dereferencing. If multitasking is enabled, it acquires a mutex to ensure thread-safe
+ * access to the buffer during retrieval. The function then checks if the buffer is empty;
+ * if so, it releases the mutex (if used) and returns false to indicate no message was retrieved.
+ * If the buffer contains messages, it copies the message at the head of the buffer into the provided
+ * data pointer, updates the buffer's head index and message count with wrap-around logic,
+ * and releases the mutex (if used). It returns true to indicate a successful retrieval.
  *
- * @param cb pinter to the CAN transmission buffer.
- * @param data pointer to the CAN message structure where the retrieved message will be stored.
- * @return true if a message was successfully retrieved; false if the buffer was empty.
+ * @param cb Pointer to the CAN transmission buffer. Must be initialized.
+ * @param data Pointer to the CAN message structure where the retrieved message will be stored.
+ * @return true if a message was successfully retrieved; false if the buffer was empty or input is invalid.
  */
-bool CAN_TxCBuffer_Get(CAN_TxCBuffer_t* cb, CAN_TxRxMessage_t* data){
-	if(TxCBuffer_IsEmpty(cb) == true){
-		return false;
-	}
+
+bool CAN_TxBuffer_Get(CAN_TxBuffer_t* cb, CAN_TxRxMessage_t* data){
+    if (cb == NULL || data == NULL) {
+        return false;
+    }
+
 
 #if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexAcquire(cb->txMutex, osWaitForever);
+    osMutexAcquire(cb->mutex, osWaitForever);
 #endif
 
-	*data = cb->buff[cb->attr.head];
-	cb->attr.head =  (cb->attr.head + 1) % CAN_TX_BUFFER_SIZE;
-	cb->attr.count -= 1;
+    CAN_BufferHeader_t* buffer_header_loc = &cb->header;
+
+    if (CAN_Buffer_IsEmpty(buffer_header_loc)) {
+        #if CAN_TX_ENABLE_MULTITASKING == 1
+        	osMutexRelease(cb->mutex);
+        #endif
+
+        return false;
+    }
+
+    CAN_Buffer_Get(buffer_header_loc, data);
 
 #if CAN_TX_ENABLE_MULTITASKING == 1
-	osMutexRelease(cb->txMutex);
+    osMutexRelease(cb->mutex);
 #endif
 
-	return true;
+    return true;
 }
-
-
-
-
-
-
 
 
 
