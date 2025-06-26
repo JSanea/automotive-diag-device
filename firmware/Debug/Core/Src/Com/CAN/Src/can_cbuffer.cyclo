@@ -1,7 +1,10 @@
-../Core/Src/Com/CAN/Src/can_cbuffer.c:43:6:CAN_TxBuffer_Init	2
-../Core/Src/Com/CAN/Src/can_cbuffer.c:67:13:CAN_Buffer_IsFull	1
-../Core/Src/Com/CAN/Src/can_cbuffer.c:71:13:CAN_Buffer_IsEmpty	1
-../Core/Src/Com/CAN/Src/can_cbuffer.c:75:13:CAN_Buffer_Add	1
-../Core/Src/Com/CAN/Src/can_cbuffer.c:81:13:CAN_Buffer_Get	1
-../Core/Src/Com/CAN/Src/can_cbuffer.c:102:6:CAN_TxBuffer_Add	4
-../Core/Src/Com/CAN/Src/can_cbuffer.c:147:6:CAN_TxBuffer_Get	4
+../Core/Src/Com/CAN/Src/can_cbuffer.c:28:6:CAN_TxBuffer_Init	2
+../Core/Src/Com/CAN/Src/can_cbuffer.c:54:6:CAN_RxBuffer_Init	2
+../Core/Src/Com/CAN/Src/can_cbuffer.c:94:18:CAN_TxBuffer_Add	4
+../Core/Src/Com/CAN/Src/can_cbuffer.c:139:18:CAN_TxBuffer_Get	4
+../Core/Src/Com/CAN/Src/can_cbuffer.c:190:18:CAN_RxBuffer_Add	4
+../Core/Src/Com/CAN/Src/can_cbuffer.c:240:18:CAN_RxBuffer_Get	4
+../Core/Src/Com/CAN/Src/can_cbuffer.c:272:13:CAN_Buffer_IsFull	1
+../Core/Src/Com/CAN/Src/can_cbuffer.c:276:13:CAN_Buffer_IsEmpty	1
+../Core/Src/Com/CAN/Src/can_cbuffer.c:280:13:CAN_Buffer_Add	3
+../Core/Src/Com/CAN/Src/can_cbuffer.c:290:13:CAN_Buffer_Get	3

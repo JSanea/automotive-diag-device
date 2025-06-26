@@ -36,7 +36,8 @@ Core/Src/Com/CAN/Src/can_drv.o: ../Core/Src/Com/CAN/Src/can_drv.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_drv.h
 /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cfg.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -75,3 +76,4 @@ Core/Src/Com/CAN/Src/can_drv.o: ../Core/Src/Com/CAN/Src/can_drv.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
+/home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_drv.h:

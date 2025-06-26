@@ -54,6 +54,8 @@
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+void Task_10ms(void* arg){
+	// To be continued...
+}
 /* USER CODE END Application */
 

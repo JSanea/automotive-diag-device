@@ -11,11 +11,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "stm32f4xx_hal.h"
+#include "can_drv.h"
 
-
-/* Variables */
-TaskHandle_t canTxTaskHandle;
-TaskHandle_t canRxTaskHandle;
 
 static void CAN_TxMailBoxCompleteCallback(CAN_HandleTypeDef *hcan);
 
