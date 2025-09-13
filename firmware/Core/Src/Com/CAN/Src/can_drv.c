@@ -10,7 +10,6 @@
 #include "stm32f4xx_hal_can.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stm32f4xx_hal.h"
 #include "can_drv.h"
 
 
@@ -35,23 +34,16 @@ void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan)
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-    if (hcan->Instance != CAN1) return;
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    CAN_RxHeaderTypeDef header;
-    uint8_t data[8];
+	/* Add Rx Message to Rx Buffer */
+	CanIf_GetRxMessage(hcan);
 
-    if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &header, data) != HAL_OK)
-        return;
+	/* Notify the task */
+	vTaskNotifyGiveFromISR(canRxTaskHandle, &xHigherPriorityTaskWoken);
 
-    if (header.IDE != CAN_ID_STD || header.RTR != CAN_RTR_DATA)
-        return;
-//
-//    CAN_RxFrame frame;
-//    frame.std_id = header.StdId;
-//    frame.len = header.DLC;
-//    memcpy(frame.data, data, frame.len);
-//
-//    CAN_RxBuffer_Push(&frame);
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
 }
 
 /**
@@ -72,10 +64,6 @@ static void CAN_TxMailBoxCompleteCallback(CAN_HandleTypeDef *hcan)
 
 	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
-
-
-
-
 
 
 

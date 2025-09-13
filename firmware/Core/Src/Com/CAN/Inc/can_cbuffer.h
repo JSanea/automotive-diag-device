@@ -1,63 +1,44 @@
 /*
  * can_cbuffer.h
  *
- *  Created on: Jun 25, 2025
- *      Author: osu Alexandru
+ *  Created on: Jul 3, 2025
+ *      Author: Josu Alexandru
  */
 
 #ifndef SRC_COM_CAN_INC_CAN_CBUFFER_H_
 #define SRC_COM_CAN_INC_CAN_CBUFFER_H_
 
+#include <stdint.h>
+#include <stdbool.h>
+#include "can_cfg.h"
+#include "cmsis_os2.h"
+
+#include "../../../Util/Inc/cbuffer.h"
 
 /* Defines */
 #define CAN_TX_BUFFER_SIZE ((uint8_t) 32)
 #define CAN_RX_BUFFER_SIZE ((uint8_t) 32)
 
-/* Variables */
-CAN_TxRxMessage_t TxBuff[CAN_TX_BUFFER_SIZE];
-CAN_TxRxMessage_t RxBuff[CAN_RX_BUFFER_SIZE];
-
-/* Enums */
-
-/**
- * @brief Enumeration representing various statuses of the CAN buffer.
- */
-typedef enum {
-    OK,         /**< Operation was successful */
-    NULL_PARAM, /**< A null pointer parameter was detected */
-    FULL,       /**< The buffer is full and cannot accept more data */
-    EMPTY       /**< The buffer is empty and no data is available */
-} CAN_BufferStatus;
 
 typedef struct{
-	/* Pointer to data array */
-	CAN_TxRxMessage_t* buff;
-	/* Buffer size */
-	uint8_t size;
-	/* Index of the front element */
-	uint8_t head;
-	/*  Index where the next element will be added */
-	uint8_t tail;
-	/* Current number of elements in the buffer */
-	uint8_t count;
-}CAN_BufferHeader_t;
-
-
-/* CAN Tx Buffer */
-typedef struct{
-	CAN_BufferHeader_t header;
+	CBuffer_t cbuff;
 #if CAN_TX_ENABLE_MULTITASKING == 1
 	osMutexId_t mutex;
 #endif
-}CAN_TxBuffer_t;
+}CAN_TxCBuffer_t;
 
-/* CAN Rx Buffer */
 typedef struct{
-	CAN_BufferHeader_t header;
+	CBuffer_t cbuff;
 #if CAN_RX_ENABLE_MULTITASKING == 1
 	osMutexId_t mutex;
 #endif
-}CAN_RxBuffer_t;
+}CAN_RxCBuffer_t;
 
+bool CAN_TxBuff_Init(CAN_TxCBuffer_t* can_cbuff);
+bool CAN_RxBuff_Init(CAN_RxCBuffer_t* can_cbuff);
+extern CBuffer_StatusTypeDef CAN_TxBuff_Add(void* cbuff, void* data);
+extern CBuffer_StatusTypeDef CAN_TxBuff_Get(void* cbuff, void* data);
+extern CBuffer_StatusTypeDef CAN_RxBuff_Add(void* cbuff, void* data);
+extern CBuffer_StatusTypeDef CAN_RxBuff_Get(void* cbuff, void* data);
 
 #endif /* SRC_COM_CAN_INC_CAN_CBUFFER_H_ */

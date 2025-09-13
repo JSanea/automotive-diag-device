@@ -1,0 +1,4 @@
+../Core/Src/Com/CAN/Src/can_if.c:19:6:CanIf_Init	8	static
+../Core/Src/Com/CAN/Src/can_if.c:24:21:CanIf_AddTxMessage	24	static
+../Core/Src/Com/CAN/Src/can_if.c:41:21:CanIf_Transmit	24	static
+../Core/Src/Com/CAN/Src/can_if.c:54:21:CanIf_Receive	16	static

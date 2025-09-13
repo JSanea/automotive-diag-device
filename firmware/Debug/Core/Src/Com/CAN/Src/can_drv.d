@@ -37,7 +37,15 @@ Core/Src/Com/CAN/Src/can_drv.o: ../Core/Src/Com/CAN/Src/can_drv.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_drv.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_drv.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_if.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cbuffer.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cfg.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/../../../Util/Inc/cbuffer.h
 /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cfg.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -76,4 +84,12 @@ Core/Src/Com/CAN/Src/can_drv.o: ../Core/Src/Com/CAN/Src/can_drv.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
 /home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_drv.h:
+/home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_if.h:
+/home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cbuffer.h:
+/home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/can_cfg.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+/home/alx/Desktop/Projects/Embedded/automotive_diag_device/firmware/Core/Src/Com/CAN/Inc/../../../Util/Inc/cbuffer.h:

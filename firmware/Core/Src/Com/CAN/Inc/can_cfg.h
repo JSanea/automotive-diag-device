@@ -11,6 +11,8 @@
 #include <stdint.h>
 #include "FreeRTOS.h"
 #include "task.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_can.h"
 
 
 /* Defines */
@@ -22,20 +24,37 @@
 
 /* Variables */
 
-
-/* CAN message structure */
-typedef struct {
+/* CAN TxRx header structure */
+typedef struct{
 	/* Standard ID */
     uint32_t StdId;
-    /* Data bytes */
-    uint8_t Data[CAN_DATA_SIZE];
     /* Data length */
     uint8_t DLC;
     /* Identifier type (Standard or Extended) */
     uint32_t IDE;
     /* Remote transmission request */
     uint32_t RTR;
+}CAN_TxRxHeader_t;
+
+/* CAN TxRx message structure */
+typedef struct {
+	CAN_TxRxHeader_t* header;
+    /* Data bytes */
+    uint8_t* data;
 } CAN_TxRxMessage_t;
 
+/* CAN Tx message structure */
+typedef struct {
+	CAN_TxHeaderTypeDef* header;
+    /* Data bytes */
+	uint8_t* data;
+} CAN_TxMessage_t;
+
+/* CAN Rx message structure */
+typedef struct {
+	CAN_RxHeaderTypeDef* header;
+    /* Data bytes */
+    uint8_t* data;
+} CAN_RxMessage_t;
 
 #endif /* SRC_COM_CAN_INC_CAN_CFG_H_ */

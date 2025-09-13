@@ -1,0 +1,5 @@
+../Core/Src/freertos.c:73:6:MX_FREERTOS_Init	16	static
+../Core/Src/freertos.c:115:6:StartDefaultTask	16	static
+../Core/Src/freertos.c:131:6:Task_Prepare_Request	16	static
+../Core/Src/freertos.c:137:6:Task_Process_Request	16	static
+../Core/Src/freertos.c:143:6:Task_Process_Response	16	static
